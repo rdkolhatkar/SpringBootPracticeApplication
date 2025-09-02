@@ -1,0 +1,23 @@
+Api Method : POST
+End point: /search/school
+Request Body:
+                {
+                  "Name": "Rosary",
+                  "AreaLocation": "Mumbai",
+                  "Catagory": "Secondary"
+                }
+Response Body:
+                [
+                  {
+                    "SchoolName": "RosarySchool",
+                    "Location": "Mumbai"
+                  },
+                  {
+                    "SchoolName": "SaintVincent",
+                    "Location": "Mumbai"
+                  },
+                  {
+                    "SchoolName": "NewEnglishSchool",
+                    "Location": "Mumbai"
+                  }
+                ]

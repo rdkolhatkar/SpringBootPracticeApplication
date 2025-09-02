@@ -1,0 +1,23 @@
+Api Method : Delete
+End point: api/delete/schoolDetails
+Request Body:
+                {
+                  "operation_type": "delete",
+                  "school_id": 101,
+                  "school_name": "Jawahar School"
+                }
+Response Body 200 OK:
+                {
+                  "Status": "Success",
+                  "Message": "Records deleted successfully"
+                }
+Response Body 400 Bad Request:
+                {
+                  "Status": "Operation Type is Invalid",
+                  "Message": "****** '{operation_type}' must be 'DELETE' ******"
+                }
+Response Body 503 Service Unavailable:
+                {
+                  "Status": "Failed",
+                  "Message": "Delete operation failed (Record not found or DB issue)"
+                }

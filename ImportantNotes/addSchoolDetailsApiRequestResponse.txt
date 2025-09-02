@@ -1,0 +1,38 @@
+Api Method : POST
+End point: /api/add/schoolDetails
+Request Body:
+                {
+                  "school_name": "Jawahar School",
+                  "school_address": "70 New Delhi",
+                  "school_type": "Secondary"
+                }
+
+Sample Response: 201 Created
+Response Body for 201 Created :
+                {
+                  "Status": "Success",
+                  "Message": "New school inserted successfully"
+                }
+Sample Response: 409 Conflict
+Response Body for 409 Conflict :
+                {
+                  "Status": "Failed",
+                  "Message": "School already exists with name: Jawahar School"
+                }
+Sample Response: 400 Bad Request
+Response Body for 400 Bad Request :
+                {
+                  "Status": "Failed",
+                  "Message": "Insertion failed"
+                }
+Sample Response: 500 Internal Server Error
+Response Body for 500 Internal Server Error :
+                {
+                  "Status": "Error",
+                  "Message": "API is not working as expected: <error details>"
+                }
+
+
+
+
+

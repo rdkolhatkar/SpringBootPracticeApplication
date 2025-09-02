@@ -1,0 +1,18 @@
+CREATE SCHEMA IF NOT EXISTS school_details;
+USE school_details;
+CREATE TABLE schools (
+	school_id INT AUTO_INCREMENT PRIMARY KEY,
+    school_name VARCHAR(255) NOT NULL,
+    school_address VARCHAR(255) NOT NULL,
+    school_type ENUM('Pre-Primary', 'Primary', 'Secondary') NOT NULL
+);
+SELECT * FROM schools;
+INSERT INTO schools (school_name, school_address, school_type) VALUES
+('Bright Future Primary School', '55 Main Street, Chennai, Tamil Nadu', 'Primary');
+INSERT INTO schools (school_name, school_address, school_type) VALUES
+('Jawahar School', '70 New Delhi', 'Secondary'),
+('City Central Primary School', 'Hyderabad, Telangana', 'Primary');
+DELETE FROM schools WHERE school_id = 1 AND school_name = 'Little Garden Primary School';
+DROP table schools;
+TRUNCATE TABLE schools;
+DELETE FROM schools WHERE school_id = 1;
