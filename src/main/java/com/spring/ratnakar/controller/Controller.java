@@ -22,7 +22,7 @@ import java.util.Map;
  * - Serving image files
  * - Searching schools (static mock data)
  * - CRUD operations (Create, Read, Delete) on School details stored in DB
- *
+ * <p>
  * Uses Spring Boot's {@link RestController} and {@link JdbcTemplate} for DB operations.
  */
 @RestController
@@ -196,4 +196,61 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(responseData); // 503 Service Unavailable
         }
     }
+
+    /**
+     * Updates the address of an existing school in the database.
+     * <p>
+     * Endpoint: PUT /updateSchoolAddress
+     * <p>
+     * Request Body (JSON):
+     * {
+     * "school_id": 101,
+     * "school_address": "New Delhi, India"
+     * }
+     * <p>
+     * Responses:
+     * ✅ 200 OK    - If the school address is successfully updated
+     * ❌ 404 NOT_FOUND - If no school is found with the given ID
+     * ❌ 400 BAD_REQUEST - If update fails due to bad data
+     * ❌ 500 INTERNAL_SERVER_ERROR - If any unexpected error occurs
+     */
+
+    @PutMapping("/updateSchoolAddress")
+    public ResponseEntity<Map<String, Object>> updateSchoolAddress(@RequestBody Map<String, Object> request) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Integer schoolId = Integer.valueOf(request.get("school_id").toString());
+            String newAddress = (String) request.get("school_address");
+
+            // 🔍 Check if school exists
+            String checkSql = "SELECT COUNT(*) FROM schools WHERE school_id = ?";
+            Integer count = jdbcTemplate.queryForObject(checkSql, Integer.class, schoolId);
+
+            if (count == null || count == 0) {
+                response.put("Status", "Failed");
+                response.put("Message", "No school found with id=" + schoolId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            // ✏️ Update address
+            String sql = "UPDATE schools SET school_address = ? WHERE school_id = ?";
+            int rows = jdbcTemplate.update(sql, newAddress, schoolId);
+
+            if (rows > 0) {
+                response.put("Status", "Success");
+                response.put("Message", "School address updated successfully for id=" + schoolId);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                response.put("Status", "Failed");
+                response.put("Message", "Update failed.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("Status", "Error");
+            response.put("Message", "Error updating school: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }
