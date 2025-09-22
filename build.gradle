@@ -54,6 +54,12 @@ configurations {
     codeImplementation.canBeResolved = true
     codeImplementation.extendsFrom implementation
 }
+/*
+configurations.all {
+    exclude group: 'ch.qos.logback', module: 'logback-classic'
+}
+*/
+
 
 dependencies {
     // Development dependency (src/main)
@@ -72,11 +78,15 @@ dependencies {
 
     // Development dependencies for code folder
     codeImplementation("org.springframework.boot:spring-boot:${springBootVersion}")
-    codeImplementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    codeImplementation("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+    codeImplementation 'org.springframework.boot:spring-boot-starter' // includes Logback by default
+    codeImplementation 'org.springframework.boot:spring-boot-starter-web' // if web app
     codeImplementation("com.mysql:mysql-connector-j")
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(ProcessResources).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
