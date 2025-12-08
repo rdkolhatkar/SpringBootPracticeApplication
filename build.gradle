@@ -26,12 +26,30 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
+configurations {
+    codeImplementation.extendsFrom implementation
+    codeRuntimeOnly.extendsFrom runtimeOnly
+
+    testAppImplementation.extendsFrom implementation
+    testAppRuntimeOnly.extendsFrom runtimeOnly
+}
+
 sourceSets {
+    main {
+        java.srcDir 'src/main/java'
+        resources.srcDir 'src/main/resources'
+    }
     code {
         java.srcDir 'src/code/java'
         resources.srcDir 'src/code/resources'
-        compileClasspath += main.output
-        runtimeClasspath += main.output
+        compileClasspath += sourceSets.main.output + configurations.codeImplementation
+        runtimeClasspath += output + compileClasspath + configurations.codeRuntimeOnly
+    }
+    test {
+        java.srcDir 'src/test/java'
+        resources.srcDir 'src/test/resources'
+        compileClasspath += sourceSets.main.output + configurations.testAppImplementation
+        runtimeClasspath += output + compileClasspath + configurations.testAppRuntimeOnly
     }
 }
 
@@ -42,34 +60,28 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    codeImplementation.canBeResolved = true
-    codeImplementation.extendsFrom implementation
-}
-
 dependencies {
 
     // Core Spring Boot starters — using SAME VERSION always
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    runtimeOnly("com.mysql:mysql-connector-j")
 
     // DO NOT specify hibernate version manually
     // Boot manages correct version based on BOM
     // implementation("org.hibernate.orm:hibernate-core")
 
-    runtimeOnly("com.mysql:mysql-connector-j")
-
-    // Tests
-    testImplementation platform("org.junit:junit-bom:${junitVersion}")
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("com.mysql:mysql-connector-j")
-
     // code folder dependencies (inherit Boot version!)
     codeImplementation("org.springframework.boot:spring-boot-starter")
     codeImplementation("org.springframework.boot:spring-boot-starter-web")
+    codeImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     codeImplementation("com.mysql:mysql-connector-j")
+
+    // Tests: Hibernate Core
+    testImplementation ('org.hibernate.orm:hibernate-core')
+    testImplementation ('org.springframework.boot:spring-boot-starter-web')
+    testRuntimeOnly ('com.mysql:mysql-connector-j')
 }
 
 test {
@@ -78,4 +90,25 @@ test {
 
 tasks.withType(ProcessResources).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+task runMainApp(type: JavaExec) {
+    group = 'application'
+    description = 'Run Spring Boot application from src/main'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass.set('com.spring.ratnakar.SpringApplication')
+}
+
+task runCodeApp(type: JavaExec) {
+    group = 'application'
+    description = 'Run Spring Boot application from src/code'
+    classpath = sourceSets.code.runtimeClasspath
+    mainClass.set('com.spring.practice.Application')
+}
+
+task runTestApp(type: JavaExec) {
+    group = 'application'
+    description = 'Run Hibernate Spring Boot application from src/test'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('com.test.training.SchoolApplication')
 }
