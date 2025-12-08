@@ -1,38 +1,30 @@
 buildscript {
     ext {
-        springBootVersion = '3.2.5'
-        springBootPlugin = '3.3.3'
+        springBootVersion = '3.3.3'   // Use 3.3.3 everywhere
         springDependencyManagement = '1.1.6'
+
         serenityCoreVersion = '3.1.15'
         serenityCucumberVersion = '3.1.15'
         cucumberVersion = '7.15.0'
         cucumberJunitVersion = '7.15.0'
         junitVersion = '5.9.1'
         restAssuredVersion = '5.4.0'
-        springBeansVersion = '5.3.34'
         gatlingVersion = '3.9.2'
         scalaLibraryVersion = '2.13.12'
     }
+
     dependencies {
         classpath "net.serenity-bdd:serenity-gradle-plugin:${serenityCoreVersion}"
     }
-    /*
-    configurations.all{
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'org.springframework' && details.requested.name.startsWith('spring-')) {
-                details.useVersion "${springBeansVersion}"
-                details.because 'Nexus IQ fix'
-            }
-        }
-    }
-    */
 }
 
 plugins {
     id "java"
-    id "org.springframework.boot" version "${springBootPlugin}"
-    id "io.spring.dependency-management" version "${springDependencyManagement}"
+    id "org.springframework.boot" version "3.3.3"      // SAME VERSION
+    id "io.spring.dependency-management" version "1.1.6"
 }
+
+apply plugin: 'io.spring.dependency-management'
 
 sourceSets {
     code {
@@ -54,32 +46,29 @@ configurations {
     codeImplementation.canBeResolved = true
     codeImplementation.extendsFrom implementation
 }
-/*
-configurations.all {
-    exclude group: 'ch.qos.logback', module: 'logback-classic'
-}
-*/
-
 
 dependencies {
-    // Development dependency (src/main)
-    implementation("org.springframework.boot:spring-boot:${springBootVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+
+    // Core Spring Boot starters — using SAME VERSION always
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+
+    // DO NOT specify hibernate version manually
+    // Boot manages correct version based on BOM
+    // implementation("org.hibernate.orm:hibernate-core")
+
     runtimeOnly("com.mysql:mysql-connector-j")
 
-    // Unit Testing Dependency (src/test)
+    // Tests
     testImplementation platform("org.junit:junit-bom:${junitVersion}")
-    testImplementation ("org.junit.jupiter:junit-jupiter")
-    testImplementation("com.mysql:mysql-connector-j")
-    testImplementation("org.springframework.boot:spring-boot:${springBootVersion}")
-    testImplementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    testImplementation("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("com.mysql:mysql-connector-j")
 
-    // Development dependencies for code folder
-    codeImplementation("org.springframework.boot:spring-boot:${springBootVersion}")
-    codeImplementation 'org.springframework.boot:spring-boot-starter' // includes Logback by default
-    codeImplementation 'org.springframework.boot:spring-boot-starter-web' // if web app
+    // code folder dependencies (inherit Boot version!)
+    codeImplementation("org.springframework.boot:spring-boot-starter")
+    codeImplementation("org.springframework.boot:spring-boot-starter-web")
     codeImplementation("com.mysql:mysql-connector-j")
 }
 

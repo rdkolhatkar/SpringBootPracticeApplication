@@ -215,7 +215,7 @@ public class Controller {
      * ❌ 500 INTERNAL_SERVER_ERROR - If any unexpected error occurs
      */
 
-    @PutMapping("/updateSchoolAddress")
+    @PutMapping("/api/updateSchoolAddress")
     public ResponseEntity<Map<String, Object>> updateSchoolAddress(@RequestBody Map<String, Object> request) {
         Map<String, Object> response = new HashMap<>();
         try {
