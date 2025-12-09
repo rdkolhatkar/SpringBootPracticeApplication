@@ -84,10 +84,6 @@ dependencies {
     testRuntimeOnly ('com.mysql:mysql-connector-j')
 }
 
-test {
-    useJUnitPlatform()
-}
-
 tasks.withType(ProcessResources).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

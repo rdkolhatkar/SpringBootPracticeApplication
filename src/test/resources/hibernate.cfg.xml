@@ -13,7 +13,7 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
 
-        <!-- Entities -->
-        <mapping class="com.example.model.School"/>
+        <!-- Correct entity class -->
+        <mapping class="com.test.training.entity.School"/>
     </session-factory>
 </hibernate-configuration>

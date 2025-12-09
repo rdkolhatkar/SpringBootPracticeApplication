@@ -3,16 +3,22 @@ package com.test.training.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "school")
+@Table(name = "schools")   // matches DB table name
 public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "school_id")    // matches DB column name
     private Long id;
 
+    @Column(name = "school_name")
     private String school_name;
+
+    @Column(name = "school_address")
     private String school_address;
-    private String school_type;
+
+    @Column(name = "school_type")
+    private String school_type;  // Enum stored as string
 
     // Getters and Setters
     public Long getId() { return id; }
