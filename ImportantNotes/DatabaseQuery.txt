@@ -16,3 +16,4 @@ DELETE FROM schools WHERE school_id = 1 AND school_name = 'Little Garden Primary
 DROP table schools;
 TRUNCATE TABLE schools;
 DELETE FROM schools WHERE school_id = 1;
+ALTER TABLE schools AUTO_INCREMENT = 2;
