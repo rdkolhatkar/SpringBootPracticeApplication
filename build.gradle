@@ -32,6 +32,9 @@ configurations {
 
     testAppImplementation.extendsFrom implementation
     testAppRuntimeOnly.extendsFrom runtimeOnly
+
+    bddImplementation.extendsFrom implementation
+    bddRuntimeOnly.extendsFrom runtimeOnly
 }
 
 sourceSets {
@@ -50,6 +53,12 @@ sourceSets {
         resources.srcDir 'src/test/resources'
         compileClasspath += sourceSets.main.output + configurations.testAppImplementation
         runtimeClasspath += output + compileClasspath + configurations.testAppRuntimeOnly
+    }
+    bdd {
+        java.srcDir 'src/bdd/java'
+        resources.srcDir 'src/bdd/resources'
+        compileClasspath += sourceSets.main.output + configurations.bddImplementation
+        runtimeClasspath += output + compileClasspath + configurations.bddRuntimeOnly
     }
 }
 
@@ -82,6 +91,16 @@ dependencies {
     testImplementation ('org.hibernate.orm:hibernate-core')
     testImplementation ('org.springframework.boot:spring-boot-starter-web')
     testRuntimeOnly ('com.mysql:mysql-connector-j')
+
+    // Junit Tests
+    bddImplementation("org.junit.jupiter:junit-jupiter:${junitVersion}")
+    bddImplementation("io.cucumber:cucumber-java:${cucumberVersion}")
+    bddImplementation("io.cucumber:cucumber-junit-platform-engine:${cucumberJunitVersion}")
+    bddImplementation("net.serenity-bdd:serenity-core:${serenityCoreVersion}")
+    bddImplementation("net.serenity-bdd:serenity-cucumber:${serenityCucumberVersion}")
+    bddImplementation("org.springframework.boot:spring-boot-starter-test")
+    bddImplementation("org.mockito:mockito-core")
+    bddImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -107,4 +126,12 @@ task runTestApp(type: JavaExec) {
     description = 'Run Hibernate Spring Boot application from src/test'
     classpath = sourceSets.test.runtimeClasspath
     mainClass.set('com.test.training.SchoolApplication')
+}
+
+task runBddTests(type: Test) {
+    description = 'Run BDD tests from src/bdd'
+    group = 'verification'
+    testClassesDirs = sourceSets.bdd.output.classesDirs
+    classpath = sourceSets.bdd.runtimeClasspath
+    useJUnitPlatform()
 }

@@ -1,10 +1,11 @@
 package com.spring.ratnakar;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringApplication {
+public class SpringBootPracticeApplication {
     public static void main(String[] args) {
-        org.springframework.boot.SpringApplication.run(SpringApplication.class);
+        SpringApplication.run(SpringBootPracticeApplication.class);
     }
 }
