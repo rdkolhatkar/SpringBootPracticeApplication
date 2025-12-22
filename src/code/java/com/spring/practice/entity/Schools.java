@@ -14,7 +14,7 @@ import jakarta.persistence.*;
  * Here, it maps the class to the "schools" table.
  */
 @Table(name = "schools")
-public class School {
+public class Schools {
 
     /**
      * @Id marks this field as the PRIMARY KEY of the table.

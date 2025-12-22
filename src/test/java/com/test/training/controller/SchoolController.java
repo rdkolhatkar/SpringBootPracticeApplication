@@ -1,7 +1,7 @@
 package com.test.training.controller;
 
 import com.test.training.entity.School;
-import com.test.training.service.SchoolService;
+import com.test.training.service.SchoolDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +14,9 @@ import java.util.Map;
 @RequestMapping("/api")
 public class SchoolController {
 
-    private final SchoolService schoolService;
+    private final SchoolDetailService schoolService;
 
-    public SchoolController(SchoolService schoolService) {
+    public SchoolController(SchoolDetailService schoolService) {
         this.schoolService = schoolService;
     }
 

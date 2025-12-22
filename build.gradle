@@ -101,6 +101,10 @@ dependencies {
     bddImplementation("org.springframework.boot:spring-boot-starter-test")
     bddImplementation("org.mockito:mockito-core")
     bddImplementation("org.mockito:mockito-junit-jupiter")
+    bddImplementation "org.mockito:mockito-inline:5.2.0"
+
+    // Make the compiled classes from src/test/java available to the code in src/bdd/java. When compiling BDD code, also include the compiled classes from test
+    bddImplementation sourceSets.test.output
 }
 
 tasks.withType(ProcessResources).configureEach {

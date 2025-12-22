@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SchoolService {
+public class SchoolDetailService {
 
     // ------------------- ADD SCHOOL -------------------
     public String addSchool(School school) {

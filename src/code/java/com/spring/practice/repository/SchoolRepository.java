@@ -1,6 +1,6 @@
 package com.spring.practice.repository;
 
-import com.spring.practice.entity.School;
+import com.spring.practice.entity.Schools;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * This interface is responsible for communicating with the database.
  */
 @Repository
-public interface SchoolRepository extends JpaRepository<School, Integer> {
+public interface SchoolRepository extends JpaRepository<Schools, Integer> {
 
     /**
      * SchoolRepository extends JpaRepository<T, ID>
@@ -64,5 +64,5 @@ public interface SchoolRepository extends JpaRepository<School, Integer> {
      *
      * This is useful for safe delete operations or validations.
      */
-    School findBySchoolIdAndSchoolName(Integer schoolId, String schoolName);
+    Schools findBySchoolIdAndSchoolName(Integer schoolId, String schoolName);
 }

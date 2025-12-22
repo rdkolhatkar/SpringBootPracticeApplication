@@ -1,6 +1,6 @@
 package com.spring.practice.controller;
 
-import com.spring.practice.entity.School;
+import com.spring.practice.entity.Schools;
 import com.spring.practice.service.SchoolService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +32,13 @@ public class Controller {
 
     // ------------------- GET ALL SCHOOLS -------------------
     @GetMapping("/getSchoolDetails")
-    public List<School> getSchoolDetails() {
+    public List<Schools> getSchoolDetails() {
         return schoolService.getAllSchools(); // Returns JSON array of School objects
     }
 
     // ------------------- ADD NEW SCHOOL -------------------
     @PostMapping("/add/schoolDetails")
-    public ResponseEntity<Map<String, Object>> addSchoolDetails(@RequestBody School school) {
+    public ResponseEntity<Map<String, Object>> addSchoolDetails(@RequestBody Schools school) {
         Map<String, Object> response = new HashMap<>();
         String result = schoolService.addSchool(school);
 
